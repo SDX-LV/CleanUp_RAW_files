@@ -13,17 +13,17 @@ import shutil
 #
 #
 #   made by Sergejs Dombrovskis  for Python 3.8
-#       v1.01    2020-07-27             Tested on Windows 10, but should work on Linux or other OS.
+#       v1.00    2020-07-27             Tested on Windows 10, but should work on Linux or other OS.
+#       v1.01    2022-04-20             changed to more robust working directory detection code.
 #
 # The logic is:
 #   1- find a recognized RAW or Sidecar file among "Known_RAW_File_types" (add any extensions that you need!)
-#       (NOTE: be careful with .DNG/.dng files - they can be used for 360deg images or other formats that do not have .JPG files)
 #   2- check if there is any .JPG file that _starts_ with the same filename
 #   3- if not, highlight and offer to move away the orphaned RAW/sidecar file for deletion, DONE.
 #
 
 # add all file types you want to clean away:   file extensions MUST have 4 characters!!!
-Known_RAW_File_types = ['.RW2', '.ORF'] # note .dop sidecar files require different check and can not be used in current version!
+Known_RAW_File_types = ['.RW2', '.dop']
 ToDelete_folder = '- ToDelete_folder'    # name of the folder where all orphaned files will be MOVED for user to delete.
 
 # todo: add search performance optimization
@@ -33,7 +33,7 @@ Text_Color_RED = '\033[31m'
 Text_Color_GREEN = '\033[32m'
 Text_Color_CYAN = '\033[36m'
 Text_Color_RESET = '\033[0m'
-root = os.getcwd()
+root = os.path.dirname(os.path.realpath(__file__))   # not robust enough:  root = os.getcwd()
 LastSubFolder = ''  # must be empty string
 FilesToRemove = []  # list of files to delete
 
